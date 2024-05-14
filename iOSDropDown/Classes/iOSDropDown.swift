@@ -13,6 +13,7 @@ open class DropDown: UITextField {
     var table: UITableView!
     var shadow: UIView!
     public var selectedIndex: Int?
+    public var selectionEnabled = true // If selectionEnabled is false, selection is ignored.
 
     // MARK: IBInspectable
 
@@ -428,7 +429,9 @@ extension DropDown: UITableViewDataSource {
 
 extension DropDown: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        if !selectionEnabled {
+            return
+        }
         let currentIndex = (indexPath as NSIndexPath).row
         let selectedText = dataArray[currentIndex]
         selectedIndex = isSearchEnable ? (optionArray.firstIndex(of: selectedText) ?? currentIndex) : currentIndex // Correct Index For Searched Text
