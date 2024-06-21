@@ -154,7 +154,8 @@ open class DropDown: UITextField {
         backgroundView.backgroundColor = .clear
         addGesture()
         if isSearchEnable && handleKeyboard {
-            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { notification in
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: nil) { [weak self] notification in
+                guard let self else { return }
                 if self.isFirstResponder {
                     let userInfo: NSDictionary = notification.userInfo! as NSDictionary
                     let keyboardFrame: NSValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
@@ -165,7 +166,8 @@ open class DropDown: UITextField {
                     }
                 }
             }
-            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) { _ in
+            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil) { [weak self] _ in
+                guard let self else { return }
                 if self.isFirstResponder {
                     self.keyboardHeight = 0
                 }
